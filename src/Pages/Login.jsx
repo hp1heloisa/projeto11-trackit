@@ -69,7 +69,6 @@ const ContainerLogin = styled.div`
         img{
             width: 154.94px;
         }
-
     }
 `
 

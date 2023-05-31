@@ -23,7 +23,7 @@ export default function Cadastro(){
     }
     
     return(
-        <ContainerLogin>
+        <ContainerCadastro>
             <div>
                 <img src={logo} />
                 <h1>TrackIt</h1>
@@ -36,11 +36,11 @@ export default function Cadastro(){
                 <button type="submit">Cadastrar</button>
             </FormEntrada>
             <Link to={"/"}>Já tem uma conta? Faça login!</Link>
-        </ContainerLogin>
+        </ContainerCadastro>
     )
 }
 
-const ContainerLogin = styled.div`
+const ContainerCadastro = styled.div`
     display: flex;
     flex-direction: column;
     width: 100%;
