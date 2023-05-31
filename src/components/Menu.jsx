@@ -1,6 +1,5 @@
 import styled from "styled-components";
 import { useLocation, Link } from "react-router-dom";
-import { useEffect } from "react";
 
 export default function Menu({estado}){
 

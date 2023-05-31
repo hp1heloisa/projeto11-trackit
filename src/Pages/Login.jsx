@@ -2,6 +2,7 @@ import { Link, useNavigate } from "react-router-dom";
 import styled from "styled-components";
 import { useState } from "react";
 import axios from "axios";
+import logo from '../assets/logo.png';
 
 export default function Login({setImage}){
 
@@ -24,6 +25,7 @@ export default function Login({setImage}){
     return(
         <ContainerLogin>
             <div>
+                <img src={logo} />
                 <h1>TrackIt</h1>
             </div>
             <FormEntrada onSubmit={e => fazerLogin(e)}>
@@ -42,13 +44,6 @@ const ContainerLogin = styled.div`
     width: 100%;
     height: 100%;
     align-items: center;
-    h1{
-        font-family: 'Playball';
-        font-weight: 400;
-        font-size: 68.982px;
-        line-height: 86px;
-        color: #126BA5;
-    }
     a{
         font-family: 'Lexend Deca';
         font-weight: 400;
@@ -57,9 +52,24 @@ const ContainerLogin = styled.div`
         color: #52B6FF;
         margin-top: 25px;
     }
-    div:nth-child(1){
+    div{
         margin-top: 68px;
         margin-bottom: 33px;
+        display:flex;
+        flex-direction: column;
+        align-items: center;
+        gap: 5px;
+        h1{
+            font-family: 'Playball';
+            font-weight: 400;
+            font-size: 68.982px;
+            line-height: 86px;
+            color: #126BA5;
+        }
+        img{
+            width: 154.94px;
+        }
+
     }
 `
 
