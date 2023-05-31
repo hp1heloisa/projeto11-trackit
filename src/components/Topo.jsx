@@ -5,11 +5,12 @@ import styled from "styled-components";
 export default function Topo({image, estado, setEstado}){
 
     const location = useLocation();
-    console.log(image);
 
     useEffect(()=>{
         if (location.pathname != '/' && location.pathname != '/cadastro'){
             setEstado('flex');
+        } else{
+            setEstado('none');
         }
     })
 
@@ -23,7 +24,7 @@ export default function Topo({image, estado, setEstado}){
 
 const DivTopo = styled.div`
     display: ${props => props.estado};
-    position: absolute;
+    position: fixed;
     left: 0px;
     top: 0px;
     width: 100%;

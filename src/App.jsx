@@ -35,8 +35,9 @@ export default function App() {
 }
 
 const Tudo = styled.div`
-    margin-top: ${props => {if (props.estado == '') return '70px'}};
-    margin-bottom: ${props => {if (props.estado == '') return '70px'}};
+    margin-top: ${props => {if (props.estado == 'flex') return '70px'}};
+    margin-bottom: ${props => {if (props.estado == 'flex') return '70px'}};
+    background-color: ${props => {if (props.estado == 'flex') return '#EBEBEB'}};
     height: 100%;
 `
 
