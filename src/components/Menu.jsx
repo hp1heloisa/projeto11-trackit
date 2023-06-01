@@ -45,6 +45,7 @@ const DivMenu = styled.div`
     }
     div {
         width: 91px;
+        height: 91px;
         background: #52B6FF;
         border-radius: 100%;
         display: flex;
