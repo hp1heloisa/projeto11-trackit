@@ -57,6 +57,7 @@ export default function Habitos({acesso}){
             mudarEstado(e);
             setName('');
             setDays([]);
+            setHabilita(false);
         });
         promise.catch(erro => {
             alert(erro.response.data.message);
@@ -89,10 +90,10 @@ export default function Habitos({acesso}){
                 <FormCriar data-test="habit-create-container" habilita={habilita} estado={estado} onSubmit={criarHabito}>
                         <input data-test="habit-name-input" type={"text"} placeholder={"nome do hábito"} value={name} disabled={habilita} onChange={e => setName(e.target.value)}/>
                         <div>
-                            {dias.map((dia,i) => <DivDia data-test="habit-day" cor={days.includes(i)} onClick={()=>escolherDia(i)}>{dia}</DivDia>)}
+                            {dias.map((dia,i) => <ButtonDia data-test="habit-day" type="button" disabled={habilita} cor={days.includes(i)} onClick={()=>escolherDia(i)}>{dia}</ButtonDia>)}
                         </div>
                         <div>
-                            <button data-test="habit-create-cancel-btn" disabled={habilita} onClick={mudarEstado}>Cancelar</button>
+                            <button data-test="habit-create-cancel-btn" disabled={habilita} type="button" onClick={mudarEstado}>Cancelar</button>
                             <button data-test="habit-create-save-btn" disabled={habilita} type="submit">Salvar</button>
                         </div>
                 </FormCriar>
@@ -106,14 +107,14 @@ export default function Habitos({acesso}){
                     <span>Meus hábitos</span>
                     <div data-test="habit-create-btn" onClick={mudarEstado}>+</div>
                 </ContainerCriacao>
-                <FormCriar data-test="habit-create-container" estado={estado} onSubmit={criarHabito}>
-                        <input data-test="habit-name-input" type={"text"} placeholder={"nome do hábito"} value={name} onChange={e => setName(e.target.value)}/>
+                <FormCriar data-test="habit-create-container" habilita={habilita} estado={estado} onSubmit={criarHabito}>
+                        <input data-test="habit-name-input" disabled={habilita} type={"text"} placeholder={"nome do hábito"} value={name} onChange={e => setName(e.target.value)}/>
                         <div>
-                            {dias.map((dia,i) => <DivDia data-test="habit-day" cor={days.includes(i)} onClick={()=>escolherDia(i)}>{dia}</DivDia>)}
+                            {dias.map((dia,i) => <ButtonDia data-test="habit-day" disabled={habilita} type="button" cor={days.includes(i)} onClick={()=>escolherDia(i)}>{dia}</ButtonDia>)}
                         </div>
                         <div>
-                            <button data-test="habit-create-cancel-btn" onClick={mudarEstado}>Cancelar</button>
-                            <button data-test="habit-create-save-btn" type="submit">Salvar</button>
+                            <button data-test="habit-create-cancel-btn" disabled={habilita} type="button" onClick={mudarEstado}>Cancelar</button>
+                            <button data-test="habit-create-save-btn" disabled={habilita} type="submit">Salvar</button>
                         </div>
                 </FormCriar>
                 <HabitosCriados>
@@ -127,9 +128,9 @@ export default function Habitos({acesso}){
                             <div>
                                 {dias.map((dia,i) => {
                                     if (habito.days.includes(i)){
-                                        return (<DivDia data-test="habit-day" cor={true}>{dia}</DivDia>)
+                                        return (<ButtonDia data-test="habit-day" cor={true} disabled>{dia}</ButtonDia>)
                                     } else{
-                                        return (<DivDia data-test="habit-day" cor={false}>{dia}</DivDia>)
+                                        return (<ButtonDia data-test="habit-day" cor={false} disabled>{dia}</ButtonDia>)
                                     }
                                 })}
                             </div>
@@ -282,7 +283,7 @@ const HabitoCriado = styled.div`
         }
 `
 
-const DivDia = styled.div`
+const ButtonDia = styled.button`
     width: 30px;
     height: 30px;
     border-radius: 5px;
