@@ -44,6 +44,7 @@ const DivMenu = styled.div`
         color: #52B6FF;
     }
     div {
+        box-sizing: border-box;
         width: 91px;
         height: 91px;
         background: #52B6FF;

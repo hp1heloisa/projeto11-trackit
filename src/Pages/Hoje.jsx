@@ -74,12 +74,12 @@ export default function Hoje({acesso, setPorcentagem}){
             <ContainerHabitosDia>
                 {habitos.map(habito =>{
                     return(
-                        <HabitoDia done={habito.done} key={habito.id}>
+                        <HabitoDia done={habito.done} atual={habito.currentSequence} maior={habito.highestSequence} key={habito.id}>
                             <div>
                                 <span>{habito.name}</span>
                                 <div>
-                                    <p>{`Sequência atual: ${habito.currentSequence}`}</p>
-                                    <p>{`Seu recorde: ${habito.highestSequence}`}</p>
+                                    <p>Sequência atual: <span>{`${habito.currentSequence}`}</span></p>
+                                    <p>Seu recorde: <span>{`${habito.highestSequence}`}</span></p>
                                 </div>
                             </div>
                             <ion-icon name="checkbox" onClick={() => marcarHabito(habito.id, habito.done)}></ion-icon>
@@ -140,9 +140,19 @@ const HabitoDia = styled.div`
             font-size: 12.976px;
             line-height: 16px;
         }
-        span{
+        > span{
             font-size: 19.976px;
             line-height: 25px;
+        }
+        >div > p:nth-child(1){
+                span{
+                    color: ${props => (props.atual > 0) ? '#8FC549' : ''};
+                }
+        }
+        >div > p:nth-child(2){
+                span{
+                    color: ${props => (props.atual == props.maior && props.atual > 0) ? '#8FC549' : ''};;
+                }
         }
     }
     ion-icon{

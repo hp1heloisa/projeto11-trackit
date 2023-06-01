@@ -10,16 +10,21 @@ export default function Cadastro(){
     let [password,setPassword] = useState('');
     let [name,setName] = useState('');
     let [image,setImage] = useState('');
+    let [habilita, setHabilita] = useState(false);
     const navigate = useNavigate()
     
 
     function fazerCadastro(e){
         e.preventDefault();
         const cadastro = {email,name,image,password};
+        setHabilita(true);
         console.log(cadastro)
         const promise = axios.post("https://mock-api.bootcamp.respondeai.com.br/api/v2/trackit/auth/sign-up",cadastro);
         promise.then(resposta => navigate('/'));
-        promise.catch(erro => alert(erro.response.data.message));
+        promise.catch(erro => {
+            alert(erro.response.data.message);
+            setHabilita(false);
+        });
     }
     
     return(
@@ -28,12 +33,12 @@ export default function Cadastro(){
                 <img src={logo} />
                 <h1>TrackIt</h1>
             </div>
-            <FormEntrada onSubmit={(e) => fazerCadastro(e)}>
-                <input type={"email"} placeholder="email" value={email} onChange={(e) => setEmail(e.target.value)} required/>
-                <input type={"password"} placeholder="senha" value={password} onChange={(e) => setPassword(e.target.value)} required/>
-                <input type={"text"} placeholder="nome" value={name} onChange={(e) => setName(e.target.value)} required/>
-                <input type={"url"} placeholder="foto" value={image} onChange={(e) => setImage(e.target.value)} required/>
-                <button type="submit">Cadastrar</button>
+            <FormEntrada habilita={habilita} onSubmit={(e) => fazerCadastro(e)}>
+                <input type={"email"} placeholder="email" value={email} disabled={habilita} onChange={(e) => setEmail(e.target.value)} required/>
+                <input type={"password"} placeholder="senha" value={password} disabled={habilita} onChange={(e) => setPassword(e.target.value)} required/>
+                <input type={"text"} placeholder="nome" value={name} disabled={habilita} onChange={(e) => setName(e.target.value)} required/>
+                <input type={"url"} placeholder="foto" value={image} disabled={habilita} onChange={(e) => setImage(e.target.value)} required/>
+                <button disabled={habilita} type="submit">Cadastrar</button>
             </FormEntrada>
             <Link to={"/"}>Já tem uma conta? Faça login!</Link>
         </ContainerCadastro>
@@ -86,7 +91,8 @@ const FormEntrada = styled.form`
     input{
         width: 303px;
         height: 45px;
-        background: #FFFFFF;
+        background: ${props => (props.habilita) ? "#F2F2F2" : "#FFFFFF"};
+        color: ${props => (props.habilita) ? "#AFAFAF" : ""};
         border: 1px solid #D5D5D5;
         border-radius: 5px;
         font-size: 19.976px;
@@ -103,5 +109,7 @@ const FormEntrada = styled.form`
         border: 1px solid #52B6FF;
         color: #FFFFFF;
         font-size: 20.976px;
+        opacity: ${props => (props.habilita) ? "0.7" : ""};
     }
 `
+

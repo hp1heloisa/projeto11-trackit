@@ -6,6 +6,7 @@ import { useNavigate } from "react-router-dom";
 export default function Habitos({acesso}){
 
     let [habitos,setHabitos] = useState([]);
+    let [habilita, setHabilita] = useState(false);
     let [estado, setEstado] = useState('none');
     let [days,setDays] = useState([]);
     let [name,setName] = useState('');
@@ -49,6 +50,7 @@ export default function Habitos({acesso}){
     function criarHabito(e){
         e.preventDefault();
         const criar = {name,days};
+        setHabilita(true);
         const promise = axios.post('https://mock-api.bootcamp.respondeai.com.br/api/v2/trackit/habits',criar,acesso);
         promise.then(resp =>{ 
             setRender(resp);
@@ -56,7 +58,10 @@ export default function Habitos({acesso}){
             setName('');
             setDays([]);
         });
-        promise.catch(erro => console.log(erro));
+        promise.catch(erro => {
+            alert(erro.response.data.message);
+            setHabilita(false);
+        });
         console.log(criar);
     }
 
@@ -81,14 +86,14 @@ export default function Habitos({acesso}){
                     <span>Meus hábitos</span>
                     <div onClick={mudarEstado}>+</div>
                 </ContainerCriacao>
-                <FormCriar estado={estado} onSubmit={criarHabito}>
-                        <input type={"text"} placeholder={"nome do hábito"} value={name} onChange={e => setName(e.target.value)}/>
+                <FormCriar habilita={habilita} estado={estado} onSubmit={criarHabito}>
+                        <input type={"text"} placeholder={"nome do hábito"} value={name} disabled={habilita} onChange={e => setName(e.target.value)}/>
                         <div>
                             {dias.map((dia,i) => <DivDia cor={days.includes(i)} onClick={()=>escolherDia(i)}>{dia}</DivDia>)}
                         </div>
                         <div>
-                            <button onClick={mudarEstado}>Cancelar</button>
-                            <button type="submit">Salvar</button>
+                            <button disabled={habilita} onClick={mudarEstado}>Cancelar</button>
+                            <button disabled={habilita} type="submit">Salvar</button>
                         </div>
                 </FormCriar>
                 <SemHabito>Você não tem nenhum hábito cadastrado ainda. Adicione um hábito para começar a trackear!</SemHabito>
@@ -188,7 +193,8 @@ const FormCriar = styled.form`
         box-sizing: border-box;
         width: 100%;
         height: 45px;
-        background: #FFFFFF;
+        background: ${props => (props.habilita) ? "#F2F2F2" : "#FFFFFF"};
+        color: ${props => (props.habilita) ? "#B3B3B3" : ""};
         border: 1px solid #D5D5D5;
         border-radius: 5px;
         padding-left: 11px;
@@ -218,6 +224,7 @@ const FormCriar = styled.form`
             font-size: 15.976px;
             line-height: 20px;
             text-align: center;
+            opacity: ${props => (props.habilita) ? "0.7" : ""};
         }
         > button:nth-child(1){
             color: #52B6FF;

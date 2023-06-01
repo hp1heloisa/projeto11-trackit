@@ -4,15 +4,18 @@ import { useState } from "react";
 import axios from "axios";
 import logo from '../assets/logo.png';
 
+
 export default function Login({setImage, setAcesso}){
 
     let [email,setEmail] = useState('');
     let [password,setPassword] = useState('');
+    let [habilita, setHabilita] = useState(false);
     const navigate = useNavigate();
 
     function fazerLogin(e){
         e.preventDefault();
         const login = {email, password};
+        setHabilita(true);
         const promise = axios.post('https://mock-api.bootcamp.respondeai.com.br/api/v2/trackit/auth/login', login);
         promise.then(resp => {
             console.log(resp)
@@ -20,7 +23,10 @@ export default function Login({setImage, setAcesso}){
             setAcesso({headers: {Authorization: `Bearer ${resp.data.token}`}});
             navigate('/hoje');
         });
-        promise.catch(erro => alert(erro.response.data.message));
+        promise.catch(erro => {
+            alert(erro.response.data.message);
+            setHabilita(false);
+        });
     }
 
     return(
@@ -29,10 +35,10 @@ export default function Login({setImage, setAcesso}){
                 <img src={logo} />
                 <h1>TrackIt</h1>
             </div>
-            <FormEntrada onSubmit={e => fazerLogin(e)}>
-                <input type={"email"} placeholder="email" value={email} onChange={e => setEmail(e.target.value)} />
-                <input type={"password"} placeholder="senha" value={password} onChange={e => setPassword(e.target.value)} />
-                <button type="submit">Entrar</button>
+            <FormEntrada habilita={habilita} onSubmit={e => fazerLogin(e)}>
+                <input type={"email"} placeholder="email" value={email} disabled={habilita} onChange={e => setEmail(e.target.value)} />
+                <input type={"password"} placeholder="senha" value={password} disabled={habilita} onChange={e => setPassword(e.target.value)} />
+                <button disabled={habilita} type="submit">Entrar</button>
             </FormEntrada>
             <Link to={"/cadastro"}>Não tem uma conta? Cadastre-se!</Link>
         </ContainerLogin>
@@ -85,7 +91,8 @@ const FormEntrada = styled.form`
     input{
         width: 303px;
         height: 45px;
-        background: #FFFFFF;
+        background: ${props => (props.habilita) ? "#F2F2F2" : "#FFFFFF"};
+        color: ${props => (props.habilita) ? "#AFAFAF" : ""};
         border: 1px solid #D5D5D5;
         border-radius: 5px;
         font-size: 19.976px;
@@ -102,5 +109,7 @@ const FormEntrada = styled.form`
         border: 1px solid #52B6FF;
         color: #FFFFFF;
         font-size: 20.976px;
+        opacity: ${props => (props.habilita) ? "0.7" : ""};
     }
 `
+
