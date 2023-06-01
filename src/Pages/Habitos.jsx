@@ -218,6 +218,7 @@ const FormCriar = styled.form`
         display: flex;
         gap: 23px;
         justify-content: end;
+        margin-top: 29px;
         button{
             font-family: 'Lexend Deca';
             font-weight: 400;
