@@ -33,6 +33,7 @@ const DivTopo = styled.div`
     box-shadow: 0px 4px 4px rgba(0, 0, 0, 0.15);
     align-items: center;
     justify-content: space-between;
+    z-index: 10;
     span{
         font-family: 'Playball';
         font-weight: 400;

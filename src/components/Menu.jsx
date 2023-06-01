@@ -40,6 +40,7 @@ const DivMenu = styled.div`
     font-weight: 400;
     font-size: 17.976px;
     line-height: 22px;
+    z-index: 10;
     span{
         color: #52B6FF;
     }
