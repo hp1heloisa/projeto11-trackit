@@ -15,22 +15,24 @@ export default function App() {
   axios.defaults.headers.common['Authorization'] = '4aM0zdek9vylJloFhgNLtldy';
 
   let [estado,setEstado] = useState('none');
-  let [image, setImage] = useState('')
+  let [image, setImage] = useState('');
+  let [acesso,setAcesso] = useState({});
+  let [porcentagem, setPorcentagem] = useState(0);
   
   return (
-    <Tudo estado={estado}>
       <BrowserRouter>
+       <Tudo estado={estado}>
       <Topo estado={estado} image={image} setEstado={setEstado}/>
       <Routes>
-        <Route path='/' element={<Login setImage={setImage} />} />
+        <Route path='/' element={<Login setImage={setImage} setAcesso={setAcesso} />} />
         <Route path='/cadastro' element={<Cadastro/>} />
-        <Route path='/habitos' element={<Habitos/>} />
-        <Route path='/hoje' element={<Hoje/>} />
-        <Route path='/historico' element={<Historico/>} />
+        <Route path='/habitos' element={<Habitos acesso={acesso}/>} />
+        <Route path='/hoje' element={<Hoje acesso={acesso} setPorcentagem={setPorcentagem}/>} />
+        <Route path='/historico' element={<Historico acesso={acesso}/>} />
       </Routes>
-      <Menu estado={estado} />
+      <Menu estado={estado} porcentagem={porcentagem} />
+      </Tudo>
     </BrowserRouter>
-    </Tudo>
   )
 }
 
@@ -38,6 +40,11 @@ const Tudo = styled.div`
     margin-top: ${props => {if (props.estado == 'flex') return '70px'}};
     margin-bottom: ${props => {if (props.estado == 'flex') return '70px'}};
     background-color: ${props => {if (props.estado == 'flex') return '#EBEBEB'}};
+    min-height: 100vh;
+    padding-bottom: ${props => {if (props.estado == 'flex') return '50px'}};;
+  html, body, #root {
     height: 100%;
+  }
 `
+
 

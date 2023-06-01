@@ -96,7 +96,7 @@ const FormEntrada = styled.form`
         }
     }
     button{
-        width: 303px;
+        width: 318px;
         height: 45px;
         background: #52B6FF;
         border-radius: 5px;

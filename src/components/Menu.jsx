@@ -1,21 +1,29 @@
 import styled from "styled-components";
-import { useLocation, Link } from "react-router-dom";
+import { Link } from "react-router-dom";
+import { CircularProgressbar } from "react-circular-progressbar";
 
-export default function Menu({estado}){
+export default function Menu({estado,porcentagem}){
 
-    const location = useLocation();
+    console.log(porcentagem);
 
+    const ProgressBarComponent = () => {  
+    return (
+      <div>
+        <StyledProgressBar value={porcentagem} text={"Hoje"} />
+      </div>
+    );
+  };
 
     return(
-        <DivTopo estado={estado}>
+        <DivMenu estado={estado}>
             <Link to='/habitos'><span>Hábitos</span></Link>
-            <Link to='/hoje'><div>Hoje</div></Link>
+            <Link to='/hoje'><ProgressBarComponent/></Link>
             <Link to='/historico'><span>Histórico</span></Link>
-        </DivTopo>
+        </DivMenu>
     )
 }
 
-const DivTopo = styled.div`
+const DivMenu = styled.div`
     display: ${props => props.estado};
     box-sizing: border-box;
     position: fixed;
@@ -37,16 +45,32 @@ const DivTopo = styled.div`
     }
     div {
         width: 91px;
-        height: 91px;
         background: #52B6FF;
-        color: #FFFFFF;
         border-radius: 100%;
         display: flex;
+        margin-bottom: 50px;
+        align-items: center;     
         justify-content: center;
-        align-items: center;
-        margin-bottom: 40px;        
+        padding: 5px;  
     }
     a{
         text-decoration:none;
     }
 `
+
+const StyledProgressBar = styled(CircularProgressbar)`
+  .CircularProgressbar-path {
+    stroke: #FFFFFF; /* Cor da barra de progresso */
+    stroke-linecap: round;
+    stroke-width: 7px; 
+  }
+  .CircularProgressbar-text {
+    fill: #FFFFFF; /* Cor do texto (porcentagem) */
+    text-anchor: middle;
+    dominant-baseline: middle;
+    transform: none;
+  }
+  .CircularProgressbar-trail {
+    stroke: #52B6FF; /* Cor do trilho da barra de progresso */
+  }
+`;

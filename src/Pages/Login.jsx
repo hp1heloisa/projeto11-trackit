@@ -4,7 +4,7 @@ import { useState } from "react";
 import axios from "axios";
 import logo from '../assets/logo.png';
 
-export default function Login({setImage}){
+export default function Login({setImage, setAcesso}){
 
     let [email,setEmail] = useState('');
     let [password,setPassword] = useState('');
@@ -17,7 +17,8 @@ export default function Login({setImage}){
         promise.then(resp => {
             console.log(resp)
             setImage(resp.data.image);
-            navigate('/hoje',{state:{headers: {Authorization: `Bearer ${resp.data.token}`}}});
+            setAcesso({headers: {Authorization: `Bearer ${resp.data.token}`}});
+            navigate('/hoje');
         });
         promise.catch(erro => alert(erro.response.data.message));
     }
@@ -94,7 +95,7 @@ const FormEntrada = styled.form`
         }
     }
     button{
-        width: 303px;
+        width: 318px;
         height: 45px;
         background: #52B6FF;
         border-radius: 5px;

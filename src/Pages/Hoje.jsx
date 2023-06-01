@@ -1,15 +1,14 @@
 import axios from "axios";
 import { useEffect, useState } from "react";
-import { useLocation } from "react-router-dom"
 import styled from "styled-components";
 
-export default function Hoje(){
+export default function Hoje({acesso, setPorcentagem}){
     
-    const location = useLocation();
-    const config = location.state;
     const data = new Date();
     const dias = ['Domingo', 'Segunda-Feira', 'Terça-Feira', 'Quarta-Feira', 'Quinta-Feira', 'Sexta-Feira', 'Sábado'];
     let [habitos, setHabitos] = useState([]);
+    let [quantidade, setQuantidade] = useState(0);
+    let [render, setRender] = useState('');
 
     let dia = [data.getDate(),data.getMonth()+1];
     if (dia[1]<10){
@@ -17,53 +16,138 @@ export default function Hoje(){
     } else{
         dia = dia.join('/');
     }
+    if (dia[0]<10){
+        dia = '0' + dia;
+    }
     dia = dias[data.getDay()] + ', ' + dia;
-    console.log(dia);
+
 
     useEffect(()=>{
-        const promise = axios.get('https://mock-api.bootcamp.respondeai.com.br/api/v2/trackit/habits/today',config);
+        const promise = axios.get('https://mock-api.bootcamp.respondeai.com.br/api/v2/trackit/habits/today',acesso);
         promise.then(resp => {
             setHabitos(resp.data);
-            console.log(habitos);
+            let conta = 0;
+            resp.data.map(habito => {
+                if (habito.done){
+                    conta++;
+                }
+            });
+            setQuantidade(conta)
         });
         promise.catch(erro => console.log(erro));
-    },[])
+    },[render])
 
-
-    if (habitos.length == 0){
-        return(
-            <DivHoje>
-                <h1>{dia}</h1>
-                <h2>Nenhum hábito concluído ainda</h2>
-            </DivHoje>
-        )
-    } else{
-        return(
-            <DivHoje>
-                <h1>{dia}</h1>
-                <h2>67% dos hábitos concluídos</h2>
-            </DivHoje>
-        )
+    function marcarHabito(id, done){
+        if (done) {
+            const promise = axios.post(`https://mock-api.bootcamp.respondeai.com.br/api/v2/trackit/habits/${id}/uncheck`,{},acesso);
+            promise.then(resp => {
+                console.log(resp);
+                setRender(resp);
+            });
+            promise.catch(erro => console.log(erro));
+        } else {
+            const promise = axios.post(`https://mock-api.bootcamp.respondeai.com.br/api/v2/trackit/habits/${id}/check`,{},acesso);
+            promise.then(resp => {
+                console.log(resp);
+                setRender(resp);
+            });
+            promise.catch(erro => console.log(erro));
+        }
     }
+
+    function HabConcluidos(){
+        if (quantidade==0){
+            return(<h2>Nenhum hábito concluído ainda</h2>)
+        } else{
+            return(<h2>{`${((quantidade*100)/habitos.length).toFixed(0)}% dos hábitos concluídos`}</h2>)
+        }
+    }
+    if (habitos.length>0){
+        setPorcentagem((quantidade*100)/habitos.length);
+    }
+    return(
+        <DivHoje quantidade={quantidade}>
+            <div>
+                <h1>{dia}</h1>
+                <HabConcluidos />
+            </div>
+            <ContainerHabitosDia>
+                {habitos.map(habito =>{
+                    return(
+                        <HabitoDia done={habito.done} key={habito.id}>
+                            <div>
+                                <span>{habito.name}</span>
+                                <div>
+                                    <p>{`Sequência atual: ${habito.currentSequence}`}</p>
+                                    <p>{`Seu recorde: ${habito.highestSequence}`}</p>
+                                </div>
+                            </div>
+                            <ion-icon name="checkbox" onClick={() => marcarHabito(habito.id, habito.done)}></ion-icon>
+                        </HabitoDia>
+                    )
+                    } )}
+            </ContainerHabitosDia>
+        </DivHoje>
+    )
 }
 
 
 const DivHoje = styled.div`
+    box-sizing: border-box;
     padding-top: 28px;
-    padding-left: 17px;
+    padding-left: 18px;
+    padding-right: 18px;
+    width: 100%;
+    font-family: 'Lexend Deca';
+    font-weight: 400;
     h1{
-        font-family: 'Lexend Deca';
-        font-weight: 400;
         font-size: 22.976px;
         line-height: 29px;
         color: #126BA5;
     }
     h2{
-        font-family: 'Lexend Deca';
-        font-weight: 400;
         font-size: 17.976px;
         line-height: 22px;
-        color: #BABABA;
+        color: ${props => (props.quantidade > 0) ? '#8FC549' : '#BABABA'};
     }
-
+    > div:nth-child(1) {
+        margin-bottom: 28px;
+    }
+`
+const ContainerHabitosDia = styled.div`
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+    width: 100%;
+`
+const HabitoDia = styled.div`
+    box-sizing: border-box;
+    width: 100%;
+    height: 94px;
+    background: #FFFFFF;
+    border-radius: 5px;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding-left: 15px;
+    padding-right: 13px;
+    > div{
+        display: flex;
+        flex-direction: column;
+        gap: 7px;
+        color: #666666;
+        p{
+            font-size: 12.976px;
+            line-height: 16px;
+        }
+        span{
+            font-size: 19.976px;
+            line-height: 25px;
+        }
+    }
+    ion-icon{
+        color: ${props => (props.done) ? '#8FC549' : '#E7E7E7'};
+        width: 69px;
+        height: 69px
+    }
 `
