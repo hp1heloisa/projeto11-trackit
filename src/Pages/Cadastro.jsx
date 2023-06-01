@@ -34,13 +34,13 @@ export default function Cadastro(){
                 <h1>TrackIt</h1>
             </div>
             <FormEntrada habilita={habilita} onSubmit={(e) => fazerCadastro(e)}>
-                <input type={"email"} placeholder="email" value={email} disabled={habilita} onChange={(e) => setEmail(e.target.value)} required/>
-                <input type={"password"} placeholder="senha" value={password} disabled={habilita} onChange={(e) => setPassword(e.target.value)} required/>
-                <input type={"text"} placeholder="nome" value={name} disabled={habilita} onChange={(e) => setName(e.target.value)} required/>
-                <input type={"url"} placeholder="foto" value={image} disabled={habilita} onChange={(e) => setImage(e.target.value)} required/>
-                <button disabled={habilita} type="submit">Cadastrar</button>
+                <input data-test="email-input" type={"email"} placeholder="email" value={email} disabled={habilita} onChange={(e) => setEmail(e.target.value)} required/>
+                <input data-test="password-input" type={"password"} placeholder="senha" value={password} disabled={habilita} onChange={(e) => setPassword(e.target.value)} required/>
+                <input data-test="user-name-input" type={"text"} placeholder="nome" value={name} disabled={habilita} onChange={(e) => setName(e.target.value)} required/>
+                <input data-test="user-image-input" type={"url"} placeholder="foto" value={image} disabled={habilita} onChange={(e) => setImage(e.target.value)} required/>
+                <button data-test="signup-btn" disabled={habilita} type="submit">Cadastrar</button>
             </FormEntrada>
-            <Link to={"/"}>Já tem uma conta? Faça login!</Link>
+            <Link data-test="login-link" to={"/"}>Já tem uma conta? Faça login!</Link>
         </ContainerCadastro>
     )
 }

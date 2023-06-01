@@ -84,16 +84,16 @@ export default function Habitos({acesso}){
             <ContainerTudo>
                 <ContainerCriacao>
                     <span>Meus hábitos</span>
-                    <div onClick={mudarEstado}>+</div>
+                    <div data-test="habit-create-btn" onClick={mudarEstado}>+</div>
                 </ContainerCriacao>
-                <FormCriar habilita={habilita} estado={estado} onSubmit={criarHabito}>
-                        <input type={"text"} placeholder={"nome do hábito"} value={name} disabled={habilita} onChange={e => setName(e.target.value)}/>
+                <FormCriar data-test="habit-create-container" habilita={habilita} estado={estado} onSubmit={criarHabito}>
+                        <input data-test="habit-name-input" type={"text"} placeholder={"nome do hábito"} value={name} disabled={habilita} onChange={e => setName(e.target.value)}/>
                         <div>
-                            {dias.map((dia,i) => <DivDia cor={days.includes(i)} onClick={()=>escolherDia(i)}>{dia}</DivDia>)}
+                            {dias.map((dia,i) => <DivDia data-test="habit-day" cor={days.includes(i)} onClick={()=>escolherDia(i)}>{dia}</DivDia>)}
                         </div>
                         <div>
-                            <button disabled={habilita} onClick={mudarEstado}>Cancelar</button>
-                            <button disabled={habilita} type="submit">Salvar</button>
+                            <button data-test="habit-create-cancel-btn" disabled={habilita} onClick={mudarEstado}>Cancelar</button>
+                            <button data-test="habit-create-save-btn" disabled={habilita} type="submit">Salvar</button>
                         </div>
                 </FormCriar>
                 <SemHabito>Você não tem nenhum hábito cadastrado ainda. Adicione um hábito para começar a trackear!</SemHabito>
@@ -104,32 +104,32 @@ export default function Habitos({acesso}){
             <ContainerTudo>
                 <ContainerCriacao>
                     <span>Meus hábitos</span>
-                    <div onClick={mudarEstado}>+</div>
+                    <div data-test="habit-create-btn" onClick={mudarEstado}>+</div>
                 </ContainerCriacao>
-                <FormCriar estado={estado} onSubmit={criarHabito}>
-                        <input type={"text"} placeholder={"nome do hábito"} value={name} onChange={e => setName(e.target.value)}/>
+                <FormCriar data-test="habit-create-container" estado={estado} onSubmit={criarHabito}>
+                        <input data-test="habit-name-input" type={"text"} placeholder={"nome do hábito"} value={name} onChange={e => setName(e.target.value)}/>
                         <div>
-                            {dias.map((dia,i) => <DivDia cor={days.includes(i)} onClick={()=>escolherDia(i)}>{dia}</DivDia>)}
+                            {dias.map((dia,i) => <DivDia data-test="habit-day" cor={days.includes(i)} onClick={()=>escolherDia(i)}>{dia}</DivDia>)}
                         </div>
                         <div>
-                            <button onClick={mudarEstado}>Cancelar</button>
-                            <button type="submit">Salvar</button>
+                            <button data-test="habit-create-cancel-btn" onClick={mudarEstado}>Cancelar</button>
+                            <button data-test="habit-create-save-btn" type="submit">Salvar</button>
                         </div>
                 </FormCriar>
                 <HabitosCriados>
                     {habitos.map(habito => {
                        return (
-                       <HabitoCriado key={habito.id}>
+                       <HabitoCriado data-test="habit-container" key={habito.id}>
                             <div>
-                                <span>{habito.name}</span>
-                                <ion-icon name="trash-outline" onClick={() => deletarHabito(habito.id)}></ion-icon>
+                                <span data-test="habit-name">{habito.name}</span>
+                                <ion-icon data-test="habit-delete-btn" name="trash-outline" onClick={() => deletarHabito(habito.id)}></ion-icon>
                             </div>
                             <div>
                                 {dias.map((dia,i) => {
                                     if (habito.days.includes(i)){
-                                        return (<DivDia cor={true}>{dia}</DivDia>)
+                                        return (<DivDia data-test="habit-day" cor={true}>{dia}</DivDia>)
                                     } else{
-                                        return (<DivDia cor={false}>{dia}</DivDia>)
+                                        return (<DivDia data-test="habit-day" cor={false}>{dia}</DivDia>)
                                     }
                                 })}
                             </div>

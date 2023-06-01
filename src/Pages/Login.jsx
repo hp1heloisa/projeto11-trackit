@@ -36,11 +36,11 @@ export default function Login({setImage, setAcesso}){
                 <h1>TrackIt</h1>
             </div>
             <FormEntrada habilita={habilita} onSubmit={e => fazerLogin(e)}>
-                <input type={"email"} placeholder="email" value={email} disabled={habilita} onChange={e => setEmail(e.target.value)} />
-                <input type={"password"} placeholder="senha" value={password} disabled={habilita} onChange={e => setPassword(e.target.value)} />
-                <button disabled={habilita} type="submit">Entrar</button>
+                <input data-test="email-input" type={"email"} placeholder="email" value={email} disabled={habilita} onChange={e => setEmail(e.target.value)} />
+                <input data-test="password-input" type={"password"} placeholder="senha" value={password} disabled={habilita} onChange={e => setPassword(e.target.value)} />
+                <button data-test="login-btn" disabled={habilita} type="submit">Entrar</button>
             </FormEntrada>
-            <Link to={"/cadastro"}>Não tem uma conta? Cadastre-se!</Link>
+            <Link  data-test="signup-link" to={"/cadastro"}>Não tem uma conta? Cadastre-se!</Link>
         </ContainerLogin>
     )
 }

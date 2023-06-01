@@ -15,10 +15,10 @@ export default function Menu({estado,porcentagem}){
   };
 
     return(
-        <DivMenu estado={estado}>
-            <Link to='/habitos'><span>Hábitos</span></Link>
-            <Link to='/hoje'><ProgressBarComponent/></Link>
-            <Link to='/historico'><span>Histórico</span></Link>
+        <DivMenu  data-test="menu" estado={estado}>
+            <Link data-test="habit-link" to='/habitos'><span>Hábitos</span></Link>
+            <Link data-test="today-link" to='/hoje'><ProgressBarComponent/></Link>
+            <Link data-test="history-link" to='/historico'><span>Histórico</span></Link>
         </DivMenu>
     )
 }

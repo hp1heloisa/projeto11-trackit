@@ -15,9 +15,9 @@ export default function Topo({image, estado, setEstado}){
     })
 
     return(
-        <DivTopo estado={estado}>
+        <DivTopo data-test="header" estado={estado}>
             <span>TrackIt</span>
-            <img src={image}/>
+            <img data-test="avatar" src={image}/>
         </DivTopo>
     )
 }

@@ -57,9 +57,9 @@ export default function Hoje({acesso, setPorcentagem}){
 
     function HabConcluidos(){
         if (quantidade==0){
-            return(<h2>Nenhum hábito concluído ainda</h2>)
+            return(<h2 data-test="today-counter">Nenhum hábito concluído ainda</h2>)
         } else{
-            return(<h2>{`${((quantidade*100)/habitos.length).toFixed(0)}% dos hábitos concluídos`}</h2>)
+            return(<h2 data-test="today-counter">{`${((quantidade*100)/habitos.length).toFixed(0)}% dos hábitos concluídos`}</h2>)
         }
     }
     if (habitos.length>0){
@@ -68,21 +68,21 @@ export default function Hoje({acesso, setPorcentagem}){
     return(
         <DivHoje quantidade={quantidade}>
             <div>
-                <h1>{dia}</h1>
+                <h1 data-test="today">{dia}</h1>
                 <HabConcluidos />
             </div>
             <ContainerHabitosDia>
                 {habitos.map(habito =>{
                     return(
-                        <HabitoDia done={habito.done} atual={habito.currentSequence} maior={habito.highestSequence} key={habito.id}>
+                        <HabitoDia  data-test="today-habit-container" done={habito.done} atual={habito.currentSequence} maior={habito.highestSequence} key={habito.id}>
                             <div>
-                                <span>{habito.name}</span>
+                                <span data-test="today-habit-name">{habito.name}</span>
                                 <div>
-                                    <p>Sequência atual: <span>{`${habito.currentSequence}`}</span></p>
-                                    <p>Seu recorde: <span>{`${habito.highestSequence}`}</span></p>
+                                    <p data-test="today-habit-sequence">Sequência atual: <span>{`${habito.currentSequence}`}</span></p>
+                                    <p data-test="today-habit-record">Seu recorde: <span>{`${habito.highestSequence}`}</span></p>
                                 </div>
                             </div>
-                            <ion-icon name="checkbox" onClick={() => marcarHabito(habito.id, habito.done)}></ion-icon>
+                            <ion-icon data-test="today-habit-check-btn" name="checkbox" onClick={() => marcarHabito(habito.id, habito.done)}></ion-icon>
                         </HabitoDia>
                     )
                     } )}
