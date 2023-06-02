@@ -6,8 +6,8 @@ import Cadastro from "./Pages/Cadastro";
 import Habitos from "./Pages/Habitos";
 import Hoje from "./Pages/Hoje";
 import Historico from "./Pages/Historico";
+import { Tudo } from "./styled/Styles";
 import axios from "axios";
-import styled from "styled-components";
 import { ValoresContextProvider } from "./arquivoContext";
 import { useState } from "react";
 
@@ -34,16 +34,5 @@ export default function App() {
     </BrowserRouter>
   )
 }
-
-const Tudo = styled.div`
-    margin-top: ${props => {if (props.estado == 'flex') return '70px'}};
-    margin-bottom: ${props => {if (props.estado == 'flex') return '70px'}};
-    background-color: ${props => {if (props.estado == 'flex') return '#EBEBEB'}};
-    min-height: 100vh;
-    padding-bottom: ${props => {if (props.estado == 'flex') return '50px'}};;
-  html, body, #root {
-    height: 100%;
-  }
-`
 
 

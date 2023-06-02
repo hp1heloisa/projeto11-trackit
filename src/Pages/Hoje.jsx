@@ -3,29 +3,17 @@ import { useEffect, useState } from "react";
 import styled from "styled-components";
 import { useContext } from "react";
 import { ValoresContext } from "../arquivoContext";
+import dayjs from "dayjs";
 
 
 export default function Hoje(){
     
-    const {porcentagem, setPorcentagem, acesso} = useContext(ValoresContext);
-
-    const data = new Date();
-    const dias = ['Domingo', 'Segunda-Feira', 'Terça-Feira', 'Quarta-Feira', 'Quinta-Feira', 'Sexta-Feira', 'Sábado'];
+    const {setPorcentagem, acesso} = useContext(ValoresContext);
     let [habitos, setHabitos] = useState([]);
     let [quantidade, setQuantidade] = useState(0);
     let [render, setRender] = useState('');
-
-    let dia = [data.getDate(),data.getMonth()+1];
-    if (dia[1]<10){
-        dia = dia.join('/0');
-    } else{
-        dia = dia.join('/');
-    }
-    if (dia[0]<10){
-        dia = '0' + dia;
-    }
-    dia = dias[data.getDay()] + ', ' + dia;
-
+    const dias = ['Domingo', 'Segunda-Feira', 'Terça-Feira', 'Quarta-Feira', 'Quinta-Feira', 'Sexta-Feira', 'Sábado'];
+    const hoje = dayjs();
 
     useEffect(()=>{
         const promise = axios.get('https://mock-api.bootcamp.respondeai.com.br/api/v2/trackit/habits/today',acesso);
@@ -68,7 +56,7 @@ export default function Hoje(){
         }
     }
 
-    function HabitoAtual({quant}){
+    function QuantDias({quant}){
         if (quant == 1){
             return '1 dia';
         } else {
@@ -79,11 +67,11 @@ export default function Hoje(){
     if (habitos.length>0){
         setPorcentagem((quantidade*100)/habitos.length);
     }
-    console.log(porcentagem);
+    
     return(
         <DivHoje quantidade={quantidade}>
             <div>
-                <h1 data-test="today">{dia}</h1>
+                <h1 data-test="today">{`${dias[hoje.format('d')]}, ${hoje.format('DD/MM')}`}</h1>
                 <HabConcluidos />
             </div>
             <ContainerHabitosDia>
@@ -93,8 +81,8 @@ export default function Hoje(){
                             <div>
                                 <span data-test="today-habit-name">{habito.name}</span>
                                 <div>
-                                    <p data-test="today-habit-sequence">Sequência atual: <span><HabitoAtual quant={habito.currentSequence}/></span></p>
-                                    <p data-test="today-habit-record">Seu recorde: <span><HabitoAtual quant={habito.highestSequence}/></span></p>
+                                    <p data-test="today-habit-sequence">Sequência atual: <span><QuantDias quant={habito.currentSequence}/></span></p>
+                                    <p data-test="today-habit-record">Seu recorde: <span><QuantDias quant={habito.highestSequence}/></span></p>
                                 </div>
                             </div>
                             <ion-icon data-test="today-habit-check-btn" name="checkbox" onClick={() => marcarHabito(habito.id, habito.done)}></ion-icon>

@@ -7,7 +7,6 @@ import { ValoresContext } from "../arquivoContext";
 export default function Topo({estado, setEstado}){
 
     const {image} = useContext(ValoresContext);
-
     const location = useLocation();
 
     useEffect(()=>{
