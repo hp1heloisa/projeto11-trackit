@@ -4,6 +4,7 @@ import styled from "styled-components";
 import { useNavigate } from "react-router-dom";
 import { useContext } from "react";
 import { ValoresContext } from "../arquivoContext";
+import LoadEntrar from "../components/LoadEntrar";
 
 export default function Habitos(){
 
@@ -98,7 +99,7 @@ export default function Habitos(){
                         </div>
                         <div>
                             <button data-test="habit-create-cancel-btn" disabled={habilita} type="button" onClick={mudarEstado}>Cancelar</button>
-                            <button data-test="habit-create-save-btn" disabled={habilita} type="submit">Salvar</button>
+                            <button data-test="habit-create-save-btn" disabled={habilita} type="submit"><LoadEntrar habilita={habilita}/></button>
                         </div>
                 </FormCriar>
                 <SemHabito>Você não tem nenhum hábito cadastrado ainda. Adicione um hábito para começar a trackear!</SemHabito>
@@ -118,7 +119,7 @@ export default function Habitos(){
                         </div>
                         <div>
                             <button data-test="habit-create-cancel-btn" disabled={habilita} type="button" onClick={mudarEstado}>Cancelar</button>
-                            <button data-test="habit-create-save-btn" disabled={habilita} type="submit">Salvar</button>
+                            <button data-test="habit-create-save-btn" disabled={habilita} type="submit"><LoadEntrar habilita={habilita}/></button>
                         </div>
                 </FormCriar>
                 <HabitosCriados>
@@ -244,6 +245,9 @@ const FormCriar = styled.form`
             background: #52B6FF;
             border: none;
             border-radius: 4.63636px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
         }
     }
     

@@ -1,13 +1,13 @@
 import { Link, useNavigate } from "react-router-dom";
 import styled from "styled-components";
-import { useState } from "react";
+import { useState, useContext } from "react";
 import axios from "axios";
 import logo from '../assets/logo.png';
-import { useContext } from "react";
 import { ValoresContext } from "../arquivoContext";
-
+import LoadEntrar from "../components/LoadEntrar";
 
 export default function Login(){
+
 
     const {setImage, setAcesso} = useContext(ValoresContext);
 
@@ -33,6 +33,7 @@ export default function Login(){
         });
     }
 
+
     return(
         <ContainerLogin>
             <div>
@@ -42,7 +43,7 @@ export default function Login(){
             <FormEntrada habilita={habilita} onSubmit={e => fazerLogin(e)}>
                 <input data-test="email-input" type={"email"} placeholder="email" value={email} disabled={habilita} onChange={e => setEmail(e.target.value)} />
                 <input data-test="password-input" type={"password"} placeholder="senha" value={password} disabled={habilita} onChange={e => setPassword(e.target.value)} />
-                <button data-test="login-btn" disabled={habilita} type="submit">Entrar</button>
+                <button data-test="login-btn" disabled={habilita} type="submit"><LoadEntrar habilita={habilita} /></button>
             </FormEntrada>
             <Link  data-test="signup-link" to={"/cadastro"}>Não tem uma conta? Cadastre-se!</Link>
         </ContainerLogin>
@@ -106,6 +107,7 @@ const FormEntrada = styled.form`
         }
     }
     button{
+        box-sizing: border-box;
         width: 318px;
         height: 45px;
         background: #52B6FF;
@@ -113,6 +115,10 @@ const FormEntrada = styled.form`
         border: 1px solid #52B6FF;
         color: #FFFFFF;
         font-size: 20.976px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        padding-bottom: ${props => (props.habilita) ? "35px" : ""};
         opacity: ${props => (props.habilita) ? "0.7" : ""};
     }
 `

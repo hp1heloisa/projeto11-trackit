@@ -3,6 +3,7 @@ import { Link, useNavigate } from "react-router-dom"
 import styled from "styled-components";
 import axios from "axios";
 import logo from '../assets/logo.png';
+import LoadEntrar from "../components/LoadEntrar";
 
 export default function Cadastro(){
 
@@ -38,7 +39,7 @@ export default function Cadastro(){
                 <input data-test="password-input" type={"password"} placeholder="senha" value={password} disabled={habilita} onChange={(e) => setPassword(e.target.value)} required/>
                 <input data-test="user-name-input" type={"text"} placeholder="nome" value={name} disabled={habilita} onChange={(e) => setName(e.target.value)} required/>
                 <input data-test="user-image-input" type={"url"} placeholder="foto" value={image} disabled={habilita} onChange={(e) => setImage(e.target.value)} required/>
-                <button data-test="signup-btn" disabled={habilita} type="submit">Cadastrar</button>
+                <button data-test="signup-btn" disabled={habilita} type="submit"><LoadEntrar habilita={habilita} /></button>
             </FormEntrada>
             <Link data-test="login-link" to={"/"}>Já tem uma conta? Faça login!</Link>
         </ContainerCadastro>
@@ -102,6 +103,7 @@ const FormEntrada = styled.form`
         }
     }
     button{
+        box-sizing: border-box;
         width: 318px;
         height: 45px;
         background: #52B6FF;
@@ -109,6 +111,10 @@ const FormEntrada = styled.form`
         border: 1px solid #52B6FF;
         color: #FFFFFF;
         font-size: 20.976px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        padding-bottom: ${props => (props.habilita) ? "35px" : ""};
         opacity: ${props => (props.habilita) ? "0.7" : ""};
     }
 `

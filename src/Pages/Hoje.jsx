@@ -161,12 +161,12 @@ const HabitoDia = styled.div`
         }
         >div > p:nth-child(1){
                 span{
-                    color: ${props => (props.atual > 0) ? '#8FC549' : ''};
+                    color: ${props => (props.done) ? '#8FC549' : ''};
                 }
         }
         >div > p:nth-child(2){
                 span{
-                    color: ${props => (props.atual == props.maior && props.atual > 0) ? '#8FC549' : ''};;
+                    color: ${props => (props.atual == props.maior && props.done) ? '#8FC549' : ''};;
                 }
         }
     }

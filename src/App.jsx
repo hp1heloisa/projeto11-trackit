@@ -17,7 +17,7 @@ export default function App() {
 
   
   return (
-      <BrowserRouter>
+    <BrowserRouter>
       <ValoresContextProvider>
         <Tudo estado={estado}>
           <Topo estado={estado} setEstado={setEstado}/>
@@ -30,8 +30,8 @@ export default function App() {
           </Routes>
           <Menu estado={estado}/>
         </Tudo>
-        </ValoresContextProvider>
-      </BrowserRouter>
+      </ValoresContextProvider>
+    </BrowserRouter>
   )
 }
 
