@@ -6,33 +6,32 @@ import Cadastro from "./Pages/Cadastro";
 import Habitos from "./Pages/Habitos";
 import Hoje from "./Pages/Hoje";
 import Historico from "./Pages/Historico";
-import { useState } from "react";
 import axios from "axios";
 import styled from "styled-components";
-
+import { ValoresContextProvider } from "./arquivoContext";
+import { useState } from "react";
 
 export default function App() {
   axios.defaults.headers.common['Authorization'] = '4aM0zdek9vylJloFhgNLtldy';
+  let [estado, setEstado] = useState('none');
 
-  let [estado,setEstado] = useState('none');
-  let [image, setImage] = useState('');
-  let [acesso,setAcesso] = useState({});
-  let [porcentagem, setPorcentagem] = useState(0);
   
   return (
       <BrowserRouter>
-       <Tudo estado={estado}>
-      <Topo estado={estado} image={image} setEstado={setEstado}/>
-      <Routes>
-        <Route path='/' element={<Login setImage={setImage} setAcesso={setAcesso} />} />
-        <Route path='/cadastro' element={<Cadastro/>} />
-        <Route path='/habitos' element={<Habitos acesso={acesso}/>} />
-        <Route path='/hoje' element={<Hoje acesso={acesso} setPorcentagem={setPorcentagem}/>} />
-        <Route path='/historico' element={<Historico acesso={acesso}/>} />
-      </Routes>
-      <Menu estado={estado} porcentagem={porcentagem} />
-      </Tudo>
-    </BrowserRouter>
+      <ValoresContextProvider>
+        <Tudo estado={estado}>
+          <Topo estado={estado} setEstado={setEstado}/>
+          <Routes>
+            <Route path='/' element={<Login />} />
+            <Route path='/cadastro' element={<Cadastro/>} />
+            <Route path='/habitos' element={<Habitos/>} />
+            <Route path='/hoje' element={<Hoje />} />
+            <Route path='/historico' element={<Historico/>} />
+          </Routes>
+          <Menu estado={estado}/>
+        </Tudo>
+        </ValoresContextProvider>
+      </BrowserRouter>
   )
 }
 

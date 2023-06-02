@@ -2,8 +2,12 @@ import { useEffect, useState } from "react";
 import axios from "axios";
 import styled from "styled-components";
 import { useNavigate } from "react-router-dom";
+import { useContext } from "react";
+import { ValoresContext } from "../arquivoContext";
 
-export default function Habitos({acesso}){
+export default function Habitos(){
+
+    const {acesso} = useContext(ValoresContext);
 
     let [habitos,setHabitos] = useState([]);
     let [habilita, setHabilita] = useState(false);
@@ -90,7 +94,7 @@ export default function Habitos({acesso}){
                 <FormCriar data-test="habit-create-container" habilita={habilita} estado={estado} onSubmit={criarHabito}>
                         <input data-test="habit-name-input" type={"text"} placeholder={"nome do hábito"} value={name} disabled={habilita} onChange={e => setName(e.target.value)}/>
                         <div>
-                            {dias.map((dia,i) => <ButtonDia data-test="habit-day" type="button" disabled={habilita} cor={days.includes(i)} onClick={()=>escolherDia(i)}>{dia}</ButtonDia>)}
+                            {dias.map((dia,i) => <ButtonDia key={i} data-test="habit-day" type="button" disabled={habilita} cor={days.includes(i)} onClick={()=>escolherDia(i)}>{dia}</ButtonDia>)}
                         </div>
                         <div>
                             <button data-test="habit-create-cancel-btn" disabled={habilita} type="button" onClick={mudarEstado}>Cancelar</button>
@@ -110,7 +114,7 @@ export default function Habitos({acesso}){
                 <FormCriar data-test="habit-create-container" habilita={habilita} estado={estado} onSubmit={criarHabito}>
                         <input data-test="habit-name-input" disabled={habilita} type={"text"} placeholder={"nome do hábito"} value={name} onChange={e => setName(e.target.value)}/>
                         <div>
-                            {dias.map((dia,i) => <ButtonDia data-test="habit-day" disabled={habilita} type="button" cor={days.includes(i)} onClick={()=>escolherDia(i)}>{dia}</ButtonDia>)}
+                            {dias.map((dia,i) => <ButtonDia key={i} data-test="habit-day" disabled={habilita} type="button" cor={days.includes(i)} onClick={()=>escolherDia(i)}>{dia}</ButtonDia>)}
                         </div>
                         <div>
                             <button data-test="habit-create-cancel-btn" disabled={habilita} type="button" onClick={mudarEstado}>Cancelar</button>
@@ -128,9 +132,9 @@ export default function Habitos({acesso}){
                             <div>
                                 {dias.map((dia,i) => {
                                     if (habito.days.includes(i)){
-                                        return (<ButtonDia data-test="habit-day" cor={true} disabled>{dia}</ButtonDia>)
+                                        return (<ButtonDia key={i} data-test="habit-day" cor={true} disabled>{dia}</ButtonDia>)
                                     } else{
-                                        return (<ButtonDia data-test="habit-day" cor={false} disabled>{dia}</ButtonDia>)
+                                        return (<ButtonDia key={i} data-test="habit-day" cor={false} disabled>{dia}</ButtonDia>)
                                     }
                                 })}
                             </div>

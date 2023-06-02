@@ -1,6 +1,10 @@
 import styled from "styled-components"
+import { useContext } from "react";
+import { ValoresContext } from "../arquivoContext";
 
 export default function Historico(){
+    const {acesso} = useContext(ValoresContext);
+
     return(
         <HeaderHistorico>
             <h1>Histórico</h1>

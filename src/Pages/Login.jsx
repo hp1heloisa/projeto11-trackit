@@ -3,9 +3,13 @@ import styled from "styled-components";
 import { useState } from "react";
 import axios from "axios";
 import logo from '../assets/logo.png';
+import { useContext } from "react";
+import { ValoresContext } from "../arquivoContext";
 
 
-export default function Login({setImage, setAcesso}){
+export default function Login(){
+
+    const {setImage, setAcesso} = useContext(ValoresContext);
 
     let [email,setEmail] = useState('');
     let [password,setPassword] = useState('');

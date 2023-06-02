@@ -1,8 +1,12 @@
 import { useEffect } from "react";
 import { useLocation } from "react-router-dom";
 import styled from "styled-components";
+import { useContext } from "react";
+import { ValoresContext } from "../arquivoContext";
+    
+export default function Topo({estado, setEstado}){
 
-export default function Topo({image, estado, setEstado}){
+    const {image} = useContext(ValoresContext);
 
     const location = useLocation();
 

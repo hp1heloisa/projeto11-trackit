@@ -1,8 +1,13 @@
 import styled from "styled-components";
 import { Link } from "react-router-dom";
 import { CircularProgressbar } from "react-circular-progressbar";
+import { useContext } from "react";
+import { ValoresContext } from "../arquivoContext";
+    
 
-export default function Menu({estado,porcentagem}){
+export default function Menu({estado}){
+  
+    const {porcentagem} = useContext(ValoresContext);
 
     console.log(porcentagem);
 

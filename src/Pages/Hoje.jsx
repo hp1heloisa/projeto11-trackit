@@ -1,9 +1,14 @@
 import axios from "axios";
 import { useEffect, useState } from "react";
 import styled from "styled-components";
+import { useContext } from "react";
+import { ValoresContext } from "../arquivoContext";
 
-export default function Hoje({acesso, setPorcentagem}){
+
+export default function Hoje(){
     
+    const {porcentagem, setPorcentagem, acesso} = useContext(ValoresContext);
+
     const data = new Date();
     const dias = ['Domingo', 'Segunda-Feira', 'Terça-Feira', 'Quarta-Feira', 'Quinta-Feira', 'Sexta-Feira', 'Sábado'];
     let [habitos, setHabitos] = useState([]);
@@ -32,7 +37,7 @@ export default function Hoje({acesso, setPorcentagem}){
                     conta++;
                 }
             });
-            setQuantidade(conta)
+            setQuantidade(conta);
         });
         promise.catch(erro => console.log(erro));
     },[render])
@@ -62,9 +67,19 @@ export default function Hoje({acesso, setPorcentagem}){
             return(<h2 data-test="today-counter">{`${((quantidade*100)/habitos.length).toFixed(0)}% dos hábitos concluídos`}</h2>)
         }
     }
+
+    function HabitoAtual({quant}){
+        if (quant == 1){
+            return '1 dia';
+        } else {
+            return (quant + ' dias');
+        }
+    }
+
     if (habitos.length>0){
         setPorcentagem((quantidade*100)/habitos.length);
     }
+    console.log(porcentagem);
     return(
         <DivHoje quantidade={quantidade}>
             <div>
@@ -78,8 +93,8 @@ export default function Hoje({acesso, setPorcentagem}){
                             <div>
                                 <span data-test="today-habit-name">{habito.name}</span>
                                 <div>
-                                    <p data-test="today-habit-sequence">Sequência atual: <span>{`${habito.currentSequence}`}</span></p>
-                                    <p data-test="today-habit-record">Seu recorde: <span>{`${habito.highestSequence}`}</span></p>
+                                    <p data-test="today-habit-sequence">Sequência atual: <span><HabitoAtual quant={habito.currentSequence}/></span></p>
+                                    <p data-test="today-habit-record">Seu recorde: <span><HabitoAtual quant={habito.highestSequence}/></span></p>
                                 </div>
                             </div>
                             <ion-icon data-test="today-habit-check-btn" name="checkbox" onClick={() => marcarHabito(habito.id, habito.done)}></ion-icon>
