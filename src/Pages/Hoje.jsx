@@ -8,7 +8,7 @@ import dayjs from "dayjs";
 
 export default function Hoje(){
     
-    const {setPorcentagem, acesso} = useContext(ValoresContext);
+    const {setPorcentagem, acesso, setAcesso, setImage} = useContext(ValoresContext);
     let [habitos, setHabitos] = useState([]);
     let [quantidade, setQuantidade] = useState(0);
     let [render, setRender] = useState('');
@@ -16,8 +16,15 @@ export default function Hoje(){
     const hoje = dayjs();
 
     useEffect(()=>{
-        const promise = axios.get('https://mock-api.bootcamp.respondeai.com.br/api/v2/trackit/habits/today',acesso);
-        promise.then(resp => {
+        if (!acesso.headers){
+            let dados = localStorage.getItem('dadosUsuario');
+            dados = JSON.parse(dados);
+            setAcesso({headers: {Authorization: `Bearer ${dados.token}`}});
+            setImage(dados.image);
+            setRender(1);
+        } else{
+            const promise = axios.get('https://mock-api.bootcamp.respondeai.com.br/api/v2/trackit/habits/today',acesso);
+            promise.then(resp => {
             setHabitos(resp.data);
             let conta = 0;
             resp.data.map(habito => {
@@ -26,8 +33,9 @@ export default function Hoje(){
                 }
             });
             setQuantidade(conta);
-        });
-        promise.catch(erro => console.log(erro));
+            });
+            promise.catch(erro => console.log(erro));
+        }
     },[render])
 
     function marcarHabito(id, done){

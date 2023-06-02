@@ -1,5 +1,5 @@
 import { Link, useNavigate } from "react-router-dom";
-import { useState, useContext } from "react";
+import { useState, useContext, useEffect } from "react";
 import axios from "axios";
 import { ValoresContext } from "../arquivoContext";
 import LoadEntrar from "../components/LoadEntrar";
@@ -9,12 +9,21 @@ import { FormEntrada, ContainerInicial } from "../styled/Styles";
 export default function Login(){
 
 
-    const {setImage, setAcesso} = useContext(ValoresContext);
+    const {setImage, setAcesso, acesso} = useContext(ValoresContext);
 
     let [email,setEmail] = useState('');
     let [password,setPassword] = useState('');
     let [habilita, setHabilita] = useState(false);
-    const navigate = useNavigate();
+    const navigate = useNavigate();    
+
+    useEffect(()=>{
+        let dados = localStorage.getItem('dadosUsuario');
+        dados = JSON.parse(dados);
+        if (dados) {
+            setEmail(dados.email);
+            setPassword(dados.password);
+        }
+    },[])
 
     function fazerLogin(e){
         e.preventDefault();
@@ -25,6 +34,7 @@ export default function Login(){
             console.log(resp)
             setImage(resp.data.image);
             setAcesso({headers: {Authorization: `Bearer ${resp.data.token}`}});
+            localStorage.setItem('dadosUsuario',JSON.stringify({email, password, token:resp.data.token, image: resp.data.image}));
             navigate('/hoje');
         });
         promise.catch(erro => {
@@ -32,7 +42,6 @@ export default function Login(){
             setHabilita(false);
         });
     }
-
 
     return(
         <ContainerInicial>

@@ -9,7 +9,7 @@ import { ButtonDia } from "../styled/Styles";
 
 export default function Habitos(){
 
-    const {acesso} = useContext(ValoresContext);
+    const {acesso, setAcesso, setImage} = useContext(ValoresContext);
 
     let [habitos,setHabitos] = useState([]);
     let [estado, setEstado] = useState('none');
@@ -17,13 +17,21 @@ export default function Habitos(){
     const dias = ["D","S","T","Q","Q","S","S"];
 
     useEffect(()=>{
-        const promise = axios.get('https://mock-api.bootcamp.respondeai.com.br/api/v2/trackit/habits',acesso);
-        promise.then(resp => {
-            setHabitos(resp.data);
-            console.log(habitos);
-            console.log(resp);
-        });
-        promise.catch(erro => console.log(erro));
+        if (!acesso.headers){
+            let dados = localStorage.getItem('dadosUsuario');
+            dados = JSON.parse(dados);
+            setAcesso({headers: {Authorization: `Bearer ${dados.token}`}});
+            setImage(dados.image);
+            setRender(1);
+        } else{
+            const promise = axios.get('https://mock-api.bootcamp.respondeai.com.br/api/v2/trackit/habits',acesso);
+            promise.then(resp => {
+                setHabitos(resp.data);
+                console.log(habitos);
+                console.log(resp);
+            });
+            promise.catch(erro => console.log(erro));
+        }
     },[render])
 
     function mudarEstado(e){
