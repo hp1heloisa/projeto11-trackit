@@ -58,6 +58,7 @@ button{
     align-items: center;
     justify-content: center;
     opacity: ${props => (props.habilita) ? "0.7" : ""};
+    cursor: ${props => (props.habilita) ? "not-allowed" : "pointer"};
 }
 `
 

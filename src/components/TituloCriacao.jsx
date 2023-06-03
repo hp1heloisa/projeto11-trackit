@@ -30,5 +30,6 @@ const ContainerCriacao = styled.div`
         border-radius: 4.63636px;
         text-align: center;
         line-height: 34px;
+        cursor: pointer;
     } 
 `

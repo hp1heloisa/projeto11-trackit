@@ -141,7 +141,7 @@ const StyledHabito = styled.div`
         display: flex;
         justify-content: space-between;
         align-items: center;
-        font-size: 25px;
+        font-size: 20px;
         line-height: 25px;
         h1{
             font-size: 19px;

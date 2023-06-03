@@ -108,6 +108,7 @@ const FormCriar = styled.form`
             line-height: 20px;
             text-align: center;
             opacity: ${props => (props.habilita) ? "0.7" : ""};
+            cursor: ${props => (props.habilita) ? "not-allowed" : "pointer"}
         }
         > button:nth-child(1){
             color: #52B6FF;
