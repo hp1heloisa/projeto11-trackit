@@ -1,12 +1,16 @@
-import styled from "styled-components"
 import { useContext, useEffect, useState } from "react";
 import { ValoresContext } from "../arquivoContext";
 import axios from "axios";
 import Calendar from "react-calendar";
+import 'react-calendar/dist/Calendar.css';
+import styled from "styled-components"
 
 export default function Historico(){
     const {acesso, setAcesso, setImage} = useContext(ValoresContext);
     let [render, setRender] = useState('');
+    let [habitosDias, setHabitosDias] = useState([]);
+    const [selectedDate, setSelectedDate] = useState(new Date());
+    let [renderizar, setRenderizar] = useState([]);
     
     useEffect(()=>{
         if (!acesso.headers){
@@ -17,15 +21,71 @@ export default function Historico(){
             setRender(1);
         } else{
             const promise = axios.get('https://mock-api.bootcamp.respondeai.com.br/api/v2/trackit/habits/history/daily',acesso);
-            promise.then(resp => console.log(resp.data));
+            promise.then(resp => setHabitosDias(resp.data));
             promise.catch(erro => console.log(erro));
         }
     },[render]);
 
+    let dias = habitosDias.map(dia => dia.day.split('/').map(elemento => parseInt(elemento)).join('/'));
+    let faltantes = [];
+    habitosDias.map(dia => {
+        let habitosDoDia = dia.habits;
+        for (let i=0; i<habitosDoDia.length; i++){
+            if (habitosDoDia[i].done==false){
+                faltantes.push(dia.day.split('/').map(elemento => parseInt(elemento)).join('/'));
+                break;
+            }
+        }    
+    });
+
+    function mostrarHabito(date){
+        let diaClicado = date.getDate()+'/'+(date.getMonth()+1)+'/'+date.getFullYear();
+        if (dias.includes(diaClicado)){
+            let habitosDoDia = [];
+            for (let i=0; i<habitosDias[dias.indexOf(diaClicado)].habits.length;i++){
+                let add = {nome: habitosDias[dias.indexOf(diaClicado)].habits[i].name, done: habitosDias[dias.indexOf(diaClicado)].habits[i].done};
+                habitosDoDia.push(add);
+            }
+            setRenderizar(habitosDoDia);
+        } else {
+            setRenderizar([]);
+        }
+    }
+
+    function HabitosDiaClicado(){
+        if (renderizar.length!=0){
+            return(
+                <StyledHabito>
+                    <div>
+                        <h1>Os seus hábitos nesse dia foram:</h1>
+                        <ion-icon name="close" onClick={()=>setRenderizar([])}></ion-icon>
+                    </div>
+                    <div>
+                        {renderizar.map((habito, i) => {
+                            if (habito.done){
+                                return <p key={i}>{habito.nome} <span className="check"><ion-icon name="checkmark-circle"></ion-icon></span></p>
+                            } else{
+                                return <p key={i}>{habito.nome} <span className="not"><ion-icon name="close-circle"></ion-icon></span></p>
+                            }
+                        })}
+                    </div>
+                </StyledHabito>
+            )
+        }
+    }
+
     return(
         <HeaderHistorico>
             <h1>Histórico</h1>
-            <StyledCalendar />
+            <HabitosDiaClicado />
+            <StyledCalendar data-test="calendar" value={selectedDate} onChange={setSelectedDate}
+              onClickDay={mostrarHabito} tileClassName={({ date }) => { 
+                if (faltantes.includes(date.getDate()+'/'+(date.getMonth()+1)+'/'+date.getFullYear()) && dias.includes(date.getDate()+'/'+(date.getMonth()+1)+'/'+date.getFullYear())) {  
+                    return 'faltouCoisa'
+                } else if (!faltantes.includes(date.getDate()+'/'+(date.getMonth()+1)+'/'+date.getFullYear()) && dias.includes(date.getDate()+'/'+(date.getMonth()+1)+'/'+date.getFullYear())){
+                    return 'tudoFeito'
+                }
+                }} />
         </HeaderHistorico>
     )
 }
@@ -35,161 +95,67 @@ const HeaderHistorico = styled.div`
     font-family: 'Lexend Deca';
     font-weight: 400;
     padding-left: 17px;
+    padding-right: 17px;
     padding-top: 28px;
+    display: flex;
+    flex-direction: column;
+    gap: 11px;
     h1{
         font-size: 22.976px;
         line-height: 29px;
         color: #126BA5;
     }
-    p{
-        font-size: 17.976px;
-        line-height: 22px;
-        color: #666666;
-        margin-top: 17px;
-    }
 `
 
 const StyledCalendar = styled(Calendar)`
-    react-calendar {
-  width: 100%;
-  background: white;
-  border: 1px solid #a0a096;
-  font-family: Arial, Helvetica, sans-serif;
-  line-height: 1.125em;
-}
-
-.react-calendar--doubleView {
-  width: 700px;
-}
-
-.react-calendar--doubleView .react-calendar__viewContainer {
-  display: flex;
-  margin: -0.5em;
-}
-
-.react-calendar--doubleView .react-calendar__viewContainer > * {
-  width: 50%;
-  margin: 0.5em;
-}
-
-.react-calendar,
-.react-calendar *,
-.react-calendar *:before,
-.react-calendar *:after {
-  -moz-box-sizing: border-box;
-  -webkit-box-sizing: border-box;
-  box-sizing: border-box;
-}
-
-.react-calendar button {
-  margin: 0;
-  border: 0;
-  outline: none;
-}
-
-.react-calendar button:enabled:hover {
-  cursor: pointer;
-}
-
-.react-calendar__navigation {
-  display: flex;
-  height: 44px;
-  margin-bottom: 1em;
-}
-
-.react-calendar__navigation button {
-  min-width: 44px;
-  background: none;
-}
-
-.react-calendar__navigation button:disabled {
-  background-color: #f0f0f0;
-}
-
-.react-calendar__navigation button:enabled:hover,
-.react-calendar__navigation button:enabled:focus {
-  background-color: #e6e6e6;
-}
-
-.react-calendar__month-view__weekdays {
-  text-align: center;
-  text-transform: uppercase;
-  font-weight: bold;
-  font-size: 0.75em;
-}
-
-.react-calendar__month-view__weekdays__weekday {
-  padding: 0.5em;
-}
-
-.react-calendar__month-view__weekNumbers .react-calendar__tile {
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  font-size: 0.75em;
-  font-weight: bold;
-}
-
-.react-calendar__month-view__days__day--weekend {
-  color: #d10000;
-}
-
-.react-calendar__month-view__days__day--neighboringMonth {
-  color: #757575;
-}
-
-.react-calendar__year-view .react-calendar__tile,
-.react-calendar__decade-view .react-calendar__tile,
-.react-calendar__century-view .react-calendar__tile {
-  padding: 2em 0.5em;
-}
-
-.react-calendar__tile {
-  max-width: 100%;
-  padding: 10px 6.6667px;
-  background: none;
-  text-align: center;
-  line-height: 16px;
-}
-
-.react-calendar__tile:disabled {
-  background-color: #f0f0f0;
-}
-
-.react-calendar__tile:enabled:hover,
-.react-calendar__tile:enabled:focus {
-  background-color: #e6e6e6;
-}
-
-.react-calendar__tile--now {
-  background: #ffff76;
-}
-
-.react-calendar__tile--now:enabled:hover,
-.react-calendar__tile--now:enabled:focus {
-  background: #ffffa9;
-}
-
-.react-calendar__tile--hasActive {
-  background: #76baff;
-}
-
-.react-calendar__tile--hasActive:enabled:hover,
-.react-calendar__tile--hasActive:enabled:focus {
-  background: #a9d4ff;
-}
-
-.react-calendar__tile--active {
-  background: #006edc;
-  color: white;
-}
-
-.react-calendar__tile--active:enabled:hover,
-.react-calendar__tile--active:enabled:focus {
-  background: #1087ff;
-}
-
-.react-calendar--selectRange .react-calendar__tile--hover {
-  background-color: #e6e6e6;
-}
+    width: 100%;
+    border-radius: 10px;
+    border: none;
+    .faltouCoisa {
+        background-color: #e22424b8;
+        color: black;
+        border-radius: 100%;
+    }
+    .tudoFeito {
+        background-color: #369236;
+        color: black;
+        border-radius: 100%;
+    }
+    .react-calendar__tile--active {
+        border-radius: 100%;
+    }
+`
+const StyledHabito = styled.div`
+    box-sizing: border-box;
+    background-color: #FFFFFF;
+    border-radius: 5px; 
+    font-family: 'Lexend Deca';
+    font-weight: 400;
+    display: flex;
+    flex-direction: column;
+    gap: 7px;
+    padding: 15px;
+    margin: auto;
+    width: 100%;
+    > div:nth-child(1){
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        font-size: 25px;
+        line-height: 25px;
+        h1{
+            font-size: 19px;
+            line-height: 25px;
+        }
+    }
+    p{
+        font-size: 15px;
+        line-height: 16px;
+    }
+    .check{
+        color: #8FC549;
+    }
+    .not{
+        color: #E75766;
+    }
 `

@@ -31,7 +31,6 @@ export default function Login(){
         setHabilita(true);
         const promise = axios.post('https://mock-api.bootcamp.respondeai.com.br/api/v2/trackit/auth/login', login);
         promise.then(resp => {
-            console.log(resp)
             setImage(resp.data.image);
             setAcesso({headers: {Authorization: `Bearer ${resp.data.token}`}});
             localStorage.setItem('dadosUsuario',JSON.stringify({email, password, token:resp.data.token, image: resp.data.image}));

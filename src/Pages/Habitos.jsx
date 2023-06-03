@@ -27,8 +27,6 @@ export default function Habitos(){
             const promise = axios.get('https://mock-api.bootcamp.respondeai.com.br/api/v2/trackit/habits',acesso);
             promise.then(resp => {
                 setHabitos(resp.data);
-                console.log(habitos);
-                console.log(resp);
             });
             promise.catch(erro => console.log(erro));
         }
@@ -49,7 +47,6 @@ export default function Habitos(){
         if (answer){
             const promise = axios.delete(`https://mock-api.bootcamp.respondeai.com.br/api/v2/trackit/habits/${i}`,acesso);
             promise.then(resp => {
-                console.log(resp)
                 setRender(resp);
             });
             promise.catch(erro => console.log(erro));

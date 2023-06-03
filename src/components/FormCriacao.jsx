@@ -24,7 +24,6 @@ export default function FormCriacao({mudarEstado, setRender, estado}) {
             });
             setDays(novo);
         }
-        console.log(days);
     }
 
     function criarHabito(e){
@@ -43,7 +42,6 @@ export default function FormCriacao({mudarEstado, setRender, estado}) {
             alert(erro.response.data.message);
             setHabilita(false);
         });
-        console.log(criar);
     }
 
     return(
