@@ -10,6 +10,7 @@ color: ${props => props.cor ? '#FFFFFF' : '#DBDBDB'};
 display: flex;
 justify-content: center;
 align-items: center;
+cursor: ${props => !props.disabled ? 'pointer' : ''};
 `
 
 export const Tudo = styled.div`

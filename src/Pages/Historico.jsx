@@ -147,6 +147,9 @@ const StyledHabito = styled.div`
             font-size: 19px;
             line-height: 25px;
         }
+        ion-icon{
+            cursor: pointer;
+        }
     }
     p{
         font-size: 15px;

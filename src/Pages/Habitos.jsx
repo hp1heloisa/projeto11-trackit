@@ -132,6 +132,9 @@ const HabitoCriado = styled.div`
             width: 100%;
             display: flex;
             justify-content: space-between;
+            ion-icon{
+                cursor: pointer;
+            }
         }
         > div:nth-child(2){
             display: flex;

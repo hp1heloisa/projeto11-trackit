@@ -1,5 +1,5 @@
 import { useEffect } from "react";
-import { useLocation } from "react-router-dom";
+import { useLocation, useNavigate } from "react-router-dom";
 import styled from "styled-components";
 import { useContext } from "react";
 import { ValoresContext } from "../arquivoContext";
@@ -8,6 +8,7 @@ export default function Topo({estado, setEstado}){
 
     const {image} = useContext(ValoresContext);
     const location = useLocation();
+    const navigate = useNavigate();
 
     useEffect(()=>{
         if (location.pathname != '/' && location.pathname != '/cadastro'){
@@ -17,10 +18,18 @@ export default function Topo({estado, setEstado}){
         }
     })
 
+    function sair(){
+        const sair = confirm('Gostaria de sair?');
+        if (sair) {
+            localStorage.removeItem("dadosUsuario");
+            navigate('/');
+        }
+    }
+
     return(
         <DivTopo data-test="header" estado={estado}>
             <span>TrackIt</span>
-            <img data-test="avatar" src={image}/>
+            <img data-test="avatar" src={image} onClick={sair} />
         </DivTopo>
     )
 }
@@ -50,5 +59,6 @@ const DivTopo = styled.div`
         height: 51px;
         border-radius: 100%;
         margin-right: 10px;
+        cursor: pointer;
     }
 `

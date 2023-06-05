@@ -169,6 +169,7 @@ const HabitoDia = styled.div`
     ion-icon{
         color: ${props => (props.done) ? '#8FC549' : '#E7E7E7'};
         width: 69px;
-        height: 69px
+        height: 69px;
+        cursor: pointer;
     }
 `

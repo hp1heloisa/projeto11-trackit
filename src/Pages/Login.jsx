@@ -20,8 +20,17 @@ export default function Login(){
         let dados = localStorage.getItem('dadosUsuario');
         dados = JSON.parse(dados);
         if (dados) {
-            setEmail(dados.email);
-            setPassword(dados.password);
+            const login = {email: dados.email, password: dados.password};
+            const promise = axios.post('https://mock-api.bootcamp.respondeai.com.br/api/v2/trackit/auth/login', login);
+            promise.then(resp => {
+                setImage(resp.data.image);
+                setAcesso({headers: {Authorization: `Bearer ${resp.data.token}`}});
+                localStorage.setItem('dadosUsuario',JSON.stringify({email, password, token:resp.data.token, image: resp.data.image}));
+                navigate('/hoje');
+            });
+            promise.catch(erro => {
+                alert(erro.response.data.message);
+            });
         }
     },[])
 
